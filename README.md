@@ -1,33 +1,67 @@
-#  Data Mining 
+#  From Data to Insight: Automated Epitope Prediction Pipeline
 
 ## Table of Contents
 
 - [Project Overview]( #Project-Overview)
+- [WHY ](WHY?)
 - [Data Sources](#Data-Sources)
-- [Tools ](Tools)
-- [Data Cleaning and Pre-processing](#Data-Cleaning-and-Pre-processing)
-- [Analysis ](Analysis)
-- [Results/Findings ](Results/Findings)
-- [Recommendation ](Recommendation)
-- [Limitations ](Limitations)
+- [Issue ](#Issue)
+- [Data Cleaning and Pre-processing](#Tools for Overcoming the Issue)
+- [Analysis ](#Analysis)
+- [Results/Findings ](#Before & After)
+- [Recommendation ](#Results)
+- [Limitations ](#Limitations)
 - [REFERENCES](REFERENCES)
   
 ### Project Overview
-This document presents the analysis of a dataset for predicting epitopes of Trypanosoma cruzi, the cause of Chagas' disease. The dataset includes 49,606 entries and 1,291 features.
+This project is intended for researchers, data scientists, and immunology teams working on pathogen analysis, vaccine research, or epitope discovery.
+
+A complete machine-learning pipeline was developed to predict Linear B-cell epitopes in Trypanosoma cruzi, the parasite responsible for Chagas disease.
+The dataset contains 49,606 samples and 1,291 features, requiring advanced preprocessing and dimensionality reduction.
  <img width="986" alt="Variable Imbalance" src="https://github.com/user-attachments/assets/fcc468b4-aa59-4c4b-a335-d8ee0bd56d04">
+
+### WHY
+Accurate epitope prediction is essential for:
+        . Vaccine candidate identification
+        . Diagnostic development
+        . Understanding immune response mechanisms
+
+However, B-cell epitopes are extremely rare, and the dataset is high-dimensional and imbalanced, making prediction challenging without a structured data-mining approach.
+ 
 ### Data Sources
 
 The primary dataset used for this analysis is the 'df.csv' file, which includes detailed information about each sample's epitopes associated with the parasite Trypanosoma cruzi.
 
-### Tools 
-Python - Data Cleaning, Analysis and Prediction
 
-### Data Cleaning and Pre-processing
-1. Data Loading and Overview
-2. Checking/Handling Missing values 
-3. Data cleaning and formatting
-4. Feature Reduction
-6. Normalisation and Upscaling
+### Issue
+
+The raw dataset presented major obstacles:
+High dimensionality (1,291 features)
+Severe class imbalance (epitope-positive samples are very rare)
+Missing values and noise
+Risk of information loss when reducing features (PCA)
+Difficulty building an interpretable, stable model
+
+### Tools for Overcoming the Issue
+Several strategies were applied:
+
+Data Preparation
+
+  - Cleaning and formatting
+  - Handling missing values
+  - Scaling and normalization
+
+Dimensionality Reduction
+
+  - Applying PCA to manage high dimensionality
+  - Testing different numbers of components
+
+Modeling
+
+  - Building a full Scikit-learn pipeline for repeatable processing
+  - Training and evaluating models on unseen data
+  - Exploring techniques to manage class imbalance (e.g., weighting)
+
 
 ###  Analysis
 code/features worked with
@@ -38,12 +72,37 @@ pipeline_lr = Pipeline([
     ('preprocessing', preprocessing_pipeline),
     ('classifier', classifier1)
 ```
-### Results/Findings
-Using the pipeline  developed, predictions on the unseen dataset  revealed that 98.82% of the distribution were predicted as -1, indicating the absence of Linear B-cell epitopes. In contrast, only 1.18% were predicted as 1, indicating the presence of Linear B-cell epitopes. This result highlights how rLinear B-cell epitopes are relatively rare in this dataset.
 
+### Before & After
+Before (Raw Data)
+
+  1,291 unfiltered features
+  Highly imbalanced classes
+  Slow training and high risk of overfitting
+  Limited interpretability
+
+After (Processed Data)
+
+  Dimensionality significantly reduced through PCA
+  Clean, normalized dataset
+  End-to-end pipeline implemented
+  Faster model training
+
+Clearer understanding of epitope distribution
+### Results/Findings
+Predictions on the unseen dataset showed:
+
+  - 98.82% predicted as −1 → No Linear B-cell epitope
+  - 1.18% predicted as 1 → Presence of epitope
+
+This reflects the biological reality: epitopes are rare in this parasite.
+The pipeline handled the complexity well but may have lost some biological signal due to the use of Principal Component Analysis (PCA) for feature reduction.
 
 ### Limitations
-The use of Principal Component Analysis (PCA) for feature reduction may have led to the loss of important information, potentially impacting the accuracy of predictions
+
+- PCA may remove important biological features
+- Severe class imbalance can bias predictions
+- Model generalizability depends on additional datasets
 
 ### REFERENCES
 1.[Epitope Mapping](https://doi.org/10.1155/2016/6760830)
